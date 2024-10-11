@@ -15,7 +15,7 @@ $conn = new PDO ($dsn, $dbuser, $dbpassword);
 
 // $conn = new PDO("mysql:host=localhost;dbname=myblog","root", "");
 $conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-echo "connection success";
+//echo "connection success";
 
 } catch (PDOException $e){
     die("Connection fail:".$e->getMessage());
