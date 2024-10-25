@@ -1,23 +1,31 @@
         <?php 
             include "layouts/navbar.php";
             include "dbconnect.php";
-            ini_set('display_errors', 1);
-            ini_set('display_startup_errors', 1);
-            error_reporting(E_ALL);
-            
-            //18446744073709551615 သည် MySQL  ရဲ့ အကြီးဆုံး value
 
-            $sql = "SELECT * FROM posts ORDER BY id DESC LIMIT 18446744073709551615 OFFSET 1";
-            //$stmt =  $conn->query($sql);
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $posts = $stmt->fetchAll();
-            $sql = "SELECT * FROM posts ORDER BY id DESC LIMIT 1";
-            //$stmt =  $conn->query($sql);
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $latest_post = $stmt->fetch();
+            //super global variable
+            // $_GET, $_POST, $_SECTION, $_COOKIE
 
+            if(isset($_GET['category_id'])){
+                $category_id = $_GET['category_id'];
+                $sql = "SELECT * FROM posts WHERE posts.category_id = :categoryID ORDER BY id DESC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':categoryID', $category_id);
+                $stmt->execute();
+                $posts = $stmt->fetchAll();
+            }else {
+                //18446744073709551615 သည် MySQL  ရဲ့ အကြီးဆုံး value
+                $sql = "SELECT * FROM posts ORDER BY id DESC LIMIT 18446744073709551615 OFFSET 1";
+                //$stmt =  $conn->query($sql);
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $posts = $stmt->fetchAll();
+
+                $sql = "SELECT * FROM posts ORDER BY id DESC LIMIT 1";
+                //$stmt =  $conn->query($sql);
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $latest_post = $stmt->fetch();
+            }
 
             //C - create
             //R - read
@@ -31,8 +39,8 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">Welcome to Blog Home!</h1>
-                    <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
+                    <h1 class="fw-bolder">Welcome to My Blog!</h1>
+                    <p class="lead mb-0">I learn for me, I share for you</p>
                 </div>
             </div>
         </header>
@@ -41,6 +49,10 @@
             <div class="row">
                 <!-- Blog entries-->
                 <div class="col-lg-8">
+                    <?php
+                        if(isset($_GET['category_id'])){
+                        }else{
+                    ?>
                     <!-- Featured blog post-->
                     <div class="card mb-4">
                         <a href="#!"><img class="card-img-top" src="<?= $latest_post['image']?>" alt="..." /></a>
@@ -51,7 +63,8 @@
                             <a class="btn btn-primary" href="detail.php?id=<?= $latest_post['id']?>">Read more →</a>
                         </div>
                     </div>
-                    <!-- Nested row for non-featured blog posts-->
+                    <?php } ?>
+                     <!-- Nested row for non-featured blog posts-->
                     <div class="row">
                     <?php
                         foreach($posts as $post){

@@ -2,7 +2,7 @@
     include "layouts/navbar.php";
     include "dbconnect.php";
 
-    $post_id = $_GET['id'];
+    $post_id = $_GET['id'];// detail.php မှာ Url ကသယ်လာတဲ့ဟာမှန်သမျ အားလုံးသည် post method or get method လားမေးရင် get method ဖြစ်ပါတယ်
     //echo $post_id;
 
     $sql = "SELECT posts.*,categories.name as category_name,users.name as user_name FROM posts INNER JOIN categories ON posts.category_id = categories.id INNER JOIN users ON posts.user_id = users.id WHERE posts.id = :postID";
@@ -25,7 +25,7 @@
                             <!-- Post meta content-->
                             <div class="text-muted fst-italic mb-2">Posted on <?= date('F d,  Y',strtotime($post['created_at']))?> by <?= $post['user_name'] ?></div>
                             <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!"><?= $post['category_name']?></a>
+                            <a class="badge bg-secondary text-decoration-none link-light" href="index.php?category_id=<?=$post['category_id']?>"><?= $post['category_name']?></a>
                         </header>
                         <!-- Preview image figure-->
                         <figure class="mb-4"><img class="img-fluid rounded" src=<?= $post['image']?> alt="..." /></figure>
