@@ -1,6 +1,7 @@
 <?php
-  
+ 
  $sql = "SELECT * FROM categories"; 
+ // $stmt = $conn->query($sql);
  $stmt = $conn->prepare($sql); //stmt = statement, $conn ထဲက နေ sql ထဲက dataတွေကို ပြန်ခွဲထုတ်တာ
  $stmt->execute(); 
  $categories = $stmt->fetchAll();
@@ -26,17 +27,16 @@
                                     <ul class="list-unstyled mb-0">
                                     <?php
                                         foreach ( $categories as $category) {
-                                            $c_id = $category['id'];
-                                            $sql = "SELECT COUNT(posts.category_id) 'c_count' FROM
-                                            posts WHERE posts.category_id = : CID";
-                                            $stmt = $conn->prepare($sql);
-                                            $stmt->bindParam(': CID', $c_id);
-                                            $stmt->execute();
-                                            $post = $stmt->fetch();
-                                            // var_dump($post['c_count']);
-                                            
+                                            //$c_id = $category['id'];
+                                            //$sql = "SELECT COUNT(posts.category_id) 'c_count' FROM
+                                            //posts WHERE posts.category_id = : CID";
+                                            //$stmt = $conn->prepare($sql);
+                                            //$stmt->bindParam(': CID', $c_id);
+                                            //$stmt->execute();
+                                            //$post = $stmt->fetch();
+                                            // var_dump($post['c_count                                            
                                     ?>
-                                        <li><a href="index.php?category_id=<?= $category['id']?>"><?= $category['name']?> (<? $post['c_count'] ?>)</a></li>
+                                        <li><a href="index.php?category_id=<?= $category['id']?>"><?= $category['name']?> (<?= $post['c_count'] ?>)</a></li>
                                     <?php } ?>
                                 </ul>
                                 </div>
@@ -61,3 +61,6 @@
         <script src="js/scripts.js"></script>
 </body>
 </html>
+
+
+
