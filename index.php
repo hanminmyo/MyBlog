@@ -1,6 +1,10 @@
         <?php 
-            include "layouts/navbar.php";
-            include "dbconnect.php";
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
+            
+             include "layouts/navbar.php";
+             include "dbconnect.php";
 
             //super global variable
             // $_GET, $_POST, $_SECTION, $_COOKIE
@@ -55,11 +59,11 @@
                     ?>
                     <!-- Featured blog post-->
                     <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="<?= $latest_post['image']?>" alt="..." /></a>
+                        <a href="#!"><img class="card-img-top" src="admin/<?= $latest_post['image']?>" alt="..." /></a>
                         <div class="card-body">
                             <div class="small text-muted"><?= date('F d,  Y',strtotime($latest_post['created_at']))?></div>
                             <h2 class="card-title"><?= $latest_post['title']?></h2>
-                            <p class="card-text"><?= substr($latest_post['description'],0,150)?>....</p>
+                            <p class="card-text"><?= substr(strip_tags($latest_post['description']),0,150)?>....</p>
                             <a class="btn btn-primary" href="detail.php?id=<?= $latest_post['id']?>">Read more →</a>
                         </div>
                     </div>
@@ -73,11 +77,11 @@
                             <!-- Blog post-->
                              <!-- substr(string, 0 , number) -->
                             <div class="card mb-4">
-                                <a href="#"><img class="card-img-top" src="<?= $post['image'] ?>" alt="..." /></a>
+                                <a href="#"><img class="card-img-top" src="admin/<?= $post['image'] ?>" alt="..." /></a>
                                 <div class="card-body">
                                     <div class="small text-muted"><?= date('F d,  Y',strtotime($post['created_at'])) ?></div>
                                     <h2 class="card-title h4"><?= $post['title'] ?></h2>
-                                    <p class="card-text"><?= substr($post['description'],0,150) ?>....</p>
+                                    <p class="card-text"><?= substr(strip_tags($post['description']),0,150) ?>....</p>
                                     <a class="btn btn-primary" href="detail.php?id=<?= $post['id']?>">Read more →</a>
                                 </div>
                             </div>                        

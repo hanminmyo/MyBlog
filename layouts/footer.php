@@ -37,7 +37,7 @@ error_reporting(E_ALL);
                                             $post = $stmt->fetch();
                                             // var_dump($post['c_count                                            
                                     ?>
-                                        <li><a href="index.php?category_id=<?= $category['id']?>"><?= $category['name']?> (<?= $post['c_count'] ?>)</a></li>
+                                        <li><a href="index.php?category_id=<?= $category['id']?>"><?=$category['name']?> (<?= $post['c_count'] ?>)</a></li>
                                     <?php } ?>
                                 </ul>
                                 </div>
@@ -60,6 +60,7 @@ error_reporting(E_ALL);
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+
 </body>
 </html>
 
