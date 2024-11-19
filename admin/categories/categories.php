@@ -1,77 +1,71 @@
 <?php
-    session_start();
-    if($_SESSION['user_id'] && $_SESSION['user_role'] == 'Admin'){
 
+    session_start();
+    if($_SESSION['user_id']){
     include "../layouts/navbar_side.php";
     include "../../dbconnect.php";
 
-    $sql = "SELECT * FROM users";
+    $sql = "SELECT * FROM categories";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-    $users = $stmt->fetchAll();
+    $categories = $stmt->fetchAll();
+    // var_dump($categories);
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $id = $_POST['id'];
-        // echo $id;
 
-        $sql = "DELETE FROM posts WHERE user_id = :id ";
+        $sql = "DELETE FROM categories WHERE id = :id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':id',$id);
         $stmt->execute();
 
-        $sql = "DELETE FROM users WHERE id = :id ";
+        $sql = "DELETE FROM posts WHERE category_id = :id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':id',$id);
         $stmt->execute();
-        header("location:users.php");
+        header("location:categories.php");
     }
-
-    
 ?>
 
     <div class="container my-5">
-    <div class="mb-5">
-            <h3 class="d-inline">Users List</h3>
+        <div class="mb-5">
+            <h3 class="d-inline">Categories List</h3>
+            <a href="create_category.php" class="btn btn-primary float-end">Create Category</a>
         </div>
-        <div class="card">
+        <div class="card ">
             <div class="card-body">
-                <table class="table table-bordered">
+                <table class="table table-bordered w-75 mx-auto">
                     <thead>
-                        <tr>
+                        <tr class="text-center">
                             <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
+                            <th>Category Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                             $j = 1;
-                            foreach($users as $user){
+                            foreach($categories  as $category){
                         ?>
-                        <tr>
-                            <td><?= $j++ ?></td>
-                            <td><?= $user['name'] ?></td>
-                            <td><?= $user['email']?></td>
-                            <td><?= $user['role'] ?></td>
-                            <td>
-                                <a href="edit_users.php?user_id=<?= $user['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                                <button class="btn btn-sm btn-danger delete" data-id="<?= $user['id'] ?>">Delete</button>
-                                <a href="view_profile.php?userid=<?= $user['id'] ?>" class="btn btn-primary btn-sm">View Profile</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="text-center"><?= $j++ ?></td>
+                                <td><?= $category['name'] ?></td>
+                                <td class="text-center">
+                                    <a href="edit_category.php?category_id=<?= $category['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                                    <button class="btn btn-sm btn-danger delete" data-id="<?= $category['id'] ?>">Delete</button>
+                                    <a href="../../associate_post.php?category_id=<?= $category['id'] ?>" class="btn btn-sm btn-primary" target="_blank">Associate Posts</a>
+                                </td>
+
+                            </tr>
                         <?php
                             }
                         ?>
                     </tbody>
                     <tfoot>
-                        <tr>
+                        <tr class="text-center">
                             <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Profile</th>
+                            <th>Category Name</th>
+                            <th>Action</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -79,8 +73,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-danger">
